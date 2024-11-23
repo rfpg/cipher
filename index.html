@@ -39,6 +39,7 @@
       border-radius: 5px;
       font-size: 14px;
       padding-right: 40px; /* Space for the icon */
+      box-sizing: border-box;
     }
     .view-icon {
       position: absolute;
@@ -46,6 +47,8 @@
       right: 10px;
       transform: translateY(-50%);
       cursor: pointer;
+      width: 24px;
+      height: 24px;
     }
     button {
       background-color: #007BFF;
@@ -68,6 +71,13 @@
       word-wrap: break-word;
       display: none;
     }
+    svg {
+      fill: #777;
+      transition: fill 0.3s;
+    }
+    svg:hover {
+      fill: #333;
+    }
   </style>
 </head>
 <body>
@@ -75,7 +85,12 @@
     <h2>Protected Cipher Tool</h2>
     <div class="input-container">
       <input type="password" id="inputText" placeholder="Insert your IPv4 address">
-      <span class="view-icon" onclick="toggleVisibility()">👁️</span>
+      <span class="view-icon" onclick="toggleVisibility()">
+        <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M12 4.5C7 4.5 2.7 8.28 1 12c1.7 3.72 6 7.5 11 7.5s9.3-3.78 11-7.5c-1.7-3.72-6-7.5-11-7.5zm0 13c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10.2c-2.31 0-4.2 1.89-4.2 4.2s1.89 4.2 4.2 4.2 4.2-1.89 4.2-4.2-1.89-4.2-4.2-4.2z"/>
+          <path id="line" d="M0 0h24v24H0z" fill="none" />
+        </svg>
+      </span>
     </div>
     <button onclick="generateCipher()">Generate Cipher</button>
     <div class="output" id="cipherOutput"></div>
@@ -83,14 +98,21 @@
   </div>
   <script>
     const cipherKey = "bananas";
+    let isTextVisible = false;
 
     function toggleVisibility() {
       const inputField = document.getElementById('inputText');
-      if (inputField.type === 'password') {
-        inputField.type = 'text';
-      } else {
+      const eyeIcon = document.getElementById('eyeIcon');
+      const line = document.getElementById('line');
+
+      if (isTextVisible) {
         inputField.type = 'password';
+        line.style.display = 'none'; // Hide line to indicate text is hidden
+      } else {
+        inputField.type = 'text';
+        line.style.display = 'block'; // Show line to indicate text is visible
       }
+      isTextVisible = !isTextVisible;
     }
 
     function generateCipher() {
