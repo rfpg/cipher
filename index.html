@@ -102,7 +102,6 @@
 
     function toggleVisibility() {
       const inputField = document.getElementById('inputText');
-      const eyeIcon = document.getElementById('eyeIcon');
       const line = document.getElementById('line');
 
       if (isTextVisible) {
@@ -113,6 +112,10 @@
         line.style.display = 'block'; // Show line to indicate text is visible
       }
       isTextVisible = !isTextVisible;
+    }
+
+    function base64Encode(str) {
+      return btoa(unescape(encodeURIComponent(str)));
     }
 
     function generateCipher() {
@@ -131,7 +134,10 @@
         cipherText += String.fromCharCode(inputText.charCodeAt(i) ^ cipherKey.charCodeAt(i % cipherKey.length));
       }
 
-      outputDiv.textContent = cipherText;
+      // Encode cipher text as Base64
+      const encodedCipher = base64Encode(cipherText);
+
+      outputDiv.textContent = encodedCipher;
       outputDiv.style.display = 'block';
       copyButton.style.display = 'block';
     }
