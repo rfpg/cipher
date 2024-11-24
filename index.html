@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Protected Cipher Tool</title>
+  <title>Configurable Cipher Tool</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -31,7 +31,7 @@
       position: relative;
       width: 100%;
     }
-    input[type="password"], input[type="text"] {
+    input[type="text"], input[type="password"] {
       width: 100%;
       padding: 10px;
       margin: 10px 0;
@@ -82,7 +82,8 @@
 </head>
 <body>
   <div class="container">
-    <h2>Protected Cipher Tool</h2>
+    <h2>Configurable Cipher Tool</h2>
+    <input type="text" id="keyInput" placeholder="Enter encryption key (default: bananas)">
     <div class="input-container">
       <input type="password" id="inputText" placeholder="Insert your IPv4 address">
       <span class="view-icon" onclick="toggleVisibility()">
@@ -97,7 +98,6 @@
     <button id="copyButton" style="display: none;" onclick="copyCipher()">Copy Cipher</button>
   </div>
   <script>
-    const cipherKey = "bananas";
     let isTextVisible = false;
 
     function toggleVisibility() {
@@ -119,6 +119,7 @@
     }
 
     function generateCipher() {
+      const keyInput = document.getElementById('keyInput').value || "bananas"; // Default key
       const inputText = document.getElementById('inputText').value;
       const outputDiv = document.getElementById('cipherOutput');
       const copyButton = document.getElementById('copyButton');
@@ -128,10 +129,15 @@
         return;
       }
 
+      if (!keyInput) {
+        alert('Please enter a valid encryption key.');
+        return;
+      }
+
       // Simple XOR cipher for demonstration
       let cipherText = '';
       for (let i = 0; i < inputText.length; i++) {
-        cipherText += String.fromCharCode(inputText.charCodeAt(i) ^ cipherKey.charCodeAt(i % cipherKey.length));
+        cipherText += String.fromCharCode(inputText.charCodeAt(i) ^ keyInput.charCodeAt(i % keyInput.length));
       }
 
       // Encode cipher text as Base64
